@@ -1,0 +1,2 @@
+#pip install rubik-solver
+
