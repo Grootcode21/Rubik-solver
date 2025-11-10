@@ -66,3 +66,12 @@ def draw_cube(ax, face_colors):
                 square = np.array([v[0] for v in verts])
                 collection = Poly3DCollection([square], facecolors=color, edgecolors='black')
                 ax.add_collection3d(collection)
+
+def visualize_solution(solution_moves: List[str]):
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.view_init(30, 45)
+    ax.set_xlim([-2, 2])
+    ax.set_ylim([-2, 2])
+    ax.set_zlim([-2, 2])
+    ax.axis('off')
