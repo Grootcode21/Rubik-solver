@@ -22,3 +22,47 @@ COLOR_MAP = {
     'L': 'orange',
     'B': 'blue'
 }
+
+def face_dict_to_facelet_string(face_dict: Dict[str, List[str]]) -> str:
+    order = ['U', 'R', 'F', 'D', 'L', 'B']
+    out = []
+    for f in order:
+        if f not in face_dict:
+            raise ValueError(f"Missing face {f} in face_dict")
+        vals = list(face_dict[f])
+        if len(vals) != 9:
+            raise ValueError(f"Face {f} must have exactly 9 stickers")
+        out.extend(vals)
+    return ''.join(out)
+
+def solve_with_rubik_solver(facelet_string: str) -> List[str]:
+    if not rubik_utils:
+        raise RuntimeError('rubik-solver not available. Install it with: pip install rubik-solver')
+    return [str(m) for m in rubik_utils.solve(facelet_string, 'Kociemba')] 
+
+def draw_cube(ax, face_colors):
+    # Simple representation: 6 faces, each a 3x3 grid.
+    face_positions = {
+        'U': np.array([0, 1, 0]),
+        'D': np.array([0, -1, 0]),
+        'F': np.array([0, 0, 1]),
+        'B': np.array([0, 0, -1]),
+        'L': np.array([-1, 0, 0]),
+        'R': np.array([1, 0, 0])
+     }
+
+    for face, normal in face_positions.items():
+        color = COLOR_MAP.get(face, 'gray')
+        for i in range(3):
+            for j in range(3):
+                offset = np.array([i - 1, j - 1, 0]) * 0.32
+                center = normal + offset
+                verts = [
+                    [center + [0.15, 0.15, 0]],
+                    [center + [-0.15, 0.15, 0]],
+                    [center + [-0.15, -0.15, 0]],
+                    [center + [0.15, -0.15, 0]]
+                ]
+                square = np.array([v[0] for v in verts])
+                collection = Poly3DCollection([square], facecolors=color, edgecolors='black')
+                ax.add_collection3d(collection)
