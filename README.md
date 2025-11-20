@@ -2,8 +2,7 @@ The original Kociemba library isn’t fully compatible with the latest Python bu
 
 Therefore, the solution is to install a maintained fork that works the same way.
 
-pip install rubik-solver
-pip install pandas
-pip install matplotlib
+pip install pandas matplotlib rubik-solver
+
 
 
